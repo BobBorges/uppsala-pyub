@@ -12,7 +12,9 @@ def make_bibtex(xml_data, output_location='.'):
 
     def _write_bibtex(bibtex, bibtex_key):
         with open(f"{output_location}/{bibtex_key}.bib", "w+") as out:
-            out.write(f"{',\n'.join(bibtex)}"+"\n}")
+            bibtex = [f"{b},\n" if i < len(bibtex)-1 else f"{b}" for i, b in enumerate(bibtex)]
+            [out.write(b) for b in bibtex]
+            out.write("\n}")
 
     def _generate_key(author_list, year):
         lasts = [_.split(',')[0].replace(" ", "").strip() for _ in author_list]
