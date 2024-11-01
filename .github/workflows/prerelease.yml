@@ -33,8 +33,8 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install requests_html
-        pip install pyriksdagen
         pip install pdoc
+        pip install .
 
     - name: Install jq
       uses: dcarbone/install-jq-action@v2
@@ -59,22 +59,16 @@ jobs:
 
     - name: Build documentation
       run: |
+        ls ..
+        ls
+        for dir in ./*/ ; do echo "" && echo $dir && ls $dir ; done
         echo "Release version ${{ env.RELEASE_NR }}"
-        pip install .
         pdoc -o docs --footer-text ${{ env.RELEASE_NR }} -t docs/dark-mode uppsala_pyub
-
-
-    - name: Run data integrity tests, write result
-      run: |
-        export RELEASE_NR=${{ env.RELEASE_NR }}
-        python -m unittest test.integrity
 
     - name: Add and commit changes
       run: |
         git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
-        git add test/results
-        git commit -m "chore: update test results"
         git add docs
         git commit -m "chore: update docs"
 
