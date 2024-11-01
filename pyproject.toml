@@ -16,6 +16,7 @@ bs4 = "^0.0.2"
 requests-html = "^0.10.0"
 lxml = "^5.3.0"
 
+
 [tool.poetry.scripts]
 pyub = "uppsala_pyub.cli:cli"
 

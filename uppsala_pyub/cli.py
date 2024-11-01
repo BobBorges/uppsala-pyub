@@ -25,7 +25,7 @@ def location(xml_data, output_location='.'):
 
 
 
-
+#if __name__ == '__main__':
 def cli():
     citation_formats = {
         "apa-6": "APA (6th edition)",
@@ -127,10 +127,4 @@ def cli():
     selected = display_results(result_soup, url)
     if selected is not None:
         programs[args.action](selected, output_location=args.output_destination)
-
-
-
-
-if __name__ == '__main__':
-    cli()
 
