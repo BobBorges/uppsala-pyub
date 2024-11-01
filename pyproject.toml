@@ -6,8 +6,8 @@ authors = ["bobborges <robert.borges@statistik.uu.se>"]
 packages = [{include = "uppsala_pyub", from = ""}]
 license = "GPLv3"
 readme = "README.md"
-repository = "https://github.com/bobborges/uppsala-pyub"
-documentation = "https://github.com/bobborges/uppsala-pyub/docs"
+repository = "https://github.com/bobborges/uppsala-pyub/"
+documentation = "https://github.com/bobborges/uppsala-pyub/docs/"
 
 
 [tool.poetry.dependencies]
