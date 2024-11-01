@@ -60,9 +60,9 @@ jobs:
     - name: Build documentation
       run: |
         echo "Release version ${{ env.RELEASE_NR }}"
-        cd uppsala-pyub
-        pdoc -o docs --footer-text ${{ env.RELEASE_NR }} -t docs/dark-mode ./uppsala_pyub
-        cd ..
+        pip install .
+        pdoc -o docs --footer-text ${{ env.RELEASE_NR }} -t docs/dark-mode uppsala_pyub
+
 
     - name: Run data integrity tests, write result
       run: |
