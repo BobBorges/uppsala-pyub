@@ -59,7 +59,7 @@ jobs:
     - name: Build documentation
       run: |
         echo "Release version ${{ env.RELEASE_NR }}"
-        pdoc -o docs --footer-text ${{ env.RELEASE_NR }} -t docs/dark-mode uppsala_pyub
+        pdoc -o docs --footer-text ${{ env.RELEASE_NR }} -t docs/dark-mode ./uppsala_pyub
 
     - name: Run data integrity tests, write result
       run: |
