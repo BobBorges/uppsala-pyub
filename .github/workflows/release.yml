@@ -6,7 +6,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -27,7 +26,6 @@ jobs:
         pip install -r requirements.txt
         pip install .
         pip install poetry
-        pip install pdoc
 
     - name: Build and publish module
       env: # authentication
