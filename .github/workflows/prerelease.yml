@@ -59,7 +59,6 @@ jobs:
     - name: Build documentation
       run: |
         echo "Release version ${{ env.RELEASE_NR }}"
-        sed -e "s/\(version\s=\s\"\)[^\"]*\"/\1${{ env.RELEASE_NR }}\"/" CITATION.cff
         pdoc -o docs --footer-text ${{ env.RELEASE_NR }} -t docs/dark-mode uppsala_pyub
 
     - name: Run data integrity tests, write result
