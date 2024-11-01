@@ -55,11 +55,13 @@ jobs:
 
     - name: Build documentation
       run: |
-        ls ..
-        ls
-        for dir in ./*/ ; do echo "" && echo $dir && ls $dir ; done
         echo "Release version ${{ env.RELEASE_NR }}"
         pdoc -o docs --footer-text ${{ env.RELEASE_NR }} -t docs/dark-mode uppsala_pyub
+
+    - name: Run data integrity tests, write result
+      run: |
+        export RELEASE_NR=${{ env.RELEASE_NR }}
+        python -m unittest test.integrity
 
     - name: Add and commit changes
       run: |
