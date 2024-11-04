@@ -8,7 +8,9 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
+lxml = "*"
 lxml[html_clean] = "*"
+lxml_clean_html = "*"
 beautifulsoup4 = "*"
 requests = "*"
 requests_html = "*"
