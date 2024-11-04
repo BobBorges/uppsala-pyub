@@ -1,6 +1,4 @@
-lxml
-lxml[html_clean]
-lxml_clean_html
+lxml[html_clean] == 5.3
 beautifulsoup4
 Requests
 requests_html
