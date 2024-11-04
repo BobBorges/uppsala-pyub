@@ -33,9 +33,10 @@ jobs:
         VERSION=$(echo ${{ github.ref }} | cut -d "v" -f 2 | xargs)
         echo "Change module version to $VERSION"
         sed -e "s/\(version\s=\s\"\)[^\"]*\"/\1$VERSION\"/" pyproject.toml
+        poetry config pypi-token.pypi $PYPI_API_TOKEN
         poetry version $VERSION
         poetry build
-        poetry publish -u "__token__" -p $PYPI_API_TOKEN
+        poetry publish
 
     - name: Add and commit changes
       run: |
