@@ -1,4 +1,4 @@
+lxml[html_clean]
 beautifulsoup4
-lxml
 Requests
 requests_html
