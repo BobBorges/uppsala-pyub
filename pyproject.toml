@@ -8,10 +8,10 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
-beautifulsoup4 = "4.12.3"
-lxml = "5.3"
-requests = "2.32.3"
-requests_html = "0.10.0"
+lxml[html_clean] = "*"
+beautifulsoup4 = "*"
+requests = "*"
+requests_html = "*"
 
 [tool.poetry.scripts]
 pyub = "uppsala_pyub.cli:cli"

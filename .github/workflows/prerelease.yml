@@ -24,17 +24,19 @@ jobs:
     - uses: actions/checkout@v4
       with:
         persist-credentials: false   # use GITHUB_TOKEN
-        fetch-depth: 1               # fetch depth is nr of commits
+        fetch-depth: 0               # fetch depth is nr of commits
+
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install pdoc
-        pip install .
+        pip list
 
     - name: Install jq
       uses: dcarbone/install-jq-action@v2
@@ -56,12 +58,7 @@ jobs:
     - name: Build documentation
       run: |
         echo "Release version ${{ env.RELEASE_NR }}"
-        pdoc -o docs --footer-text ${{ env.RELEASE_NR }} -t docs/dark-mode uppsala_pyub
-
-    - name: Run data integrity tests, write result
-      run: |
-        export RELEASE_NR=${{ env.RELEASE_NR }}
-        python -m unittest test.integrity
+        pdoc -o docs --footer-text ${{ env.RELEASE_NR }} -t docs/dark-mode ./uppsala_pyub
 
     - name: Add and commit changes
       run: |

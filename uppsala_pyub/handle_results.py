@@ -2,7 +2,7 @@ from lxml import etree
 from uppsala_pyub.soup import make_soup
 import re
 import requests
-
+print(etree.__file__)
 
 
 
