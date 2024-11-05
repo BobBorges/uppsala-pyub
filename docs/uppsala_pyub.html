@@ -21,6 +21,15 @@
             <input type="search" placeholder="Search..." role="searchbox" aria-label="search"
                    pattern=".+" required>
 
+            <h2>Contents</h2>
+            <ul>
+  <li><a href="#uppsala-pyub">Uppsala pyub</a>
+  <ul>
+    <li><a href="#installation">installation</a></li>
+    <li><a href="#usage">Usage</a></li>
+  </ul></li>
+</ul>
+
 
             <h2>Submodules</h2>
             <ul>
@@ -32,7 +41,7 @@
             </ul>
 
 
-            <footer>v0.1.2</footer>
+            <footer>v0.1.3</footer>
 
         <a class="attribution" title="pdoc: Python API documentation generator" href="https://pdoc.dev" target="_blank">
             built with <span class="visually-hidden">pdoc</span><img
@@ -46,10 +55,96 @@
                     <h1 class="modulename">
 uppsala_pyub    </h1>
 
-                
-                
-                
-                
+                        <div class="docstring"><h1 id="uppsala-pyub">Uppsala pyub</h1>
+
+<p>Use Uppsala University's library catalog from the command line or script searches by using this package as a module.</p>
+
+<h2 id="installation">installation</h2>
+
+<p>Install with pip</p>
+
+<pre><code>pip install uppsala-pyub
+</code></pre>
+
+<h2 id="usage">Usage</h2>
+
+<h3 id="cli">CLI</h3>
+
+<p>Call pyub from the command line with a specific instruction (currently only <code>fetch_bibtext</code> / <code>bib</code> is implemented).</p>
+
+<p><img src="https://raw.githubusercontent.com/BobBorges/uppsala-pyub/refs/heads/main/docs/img/usage-example-1.png" alt="usage example 1" /> </p>
+
+<p>Check the available options with <code>pyub --help</code> </p>
+
+<p><img src="https://raw.githubusercontent.com/BobBorges/uppsala-pyub/refs/heads/main/docs/img/help.png" alt="help" /></p>
+
+<p>...and create advanced searches.</p>
+
+<p><img src="https://raw.githubusercontent.com/BobBorges/uppsala-pyub/refs/heads/main/docs/img/usage-example-2.png" alt="usage example 2" /></p>
+
+<h3 id="as-a-module">As a Module</h3>
+
+<p>Pyub can also be used in scripting. See the api documentation <a href="https://bobborges.github.io/uppsala-pyub/">here</a>. For example:</p>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="kn">from</span> <span class="nn"><a href="uppsala_pyub/bibtex.html">uppsala_pyub.bibtex</a></span> <span class="kn">import</span> <span class="n">make_bibtex</span>
+<span class="kn">from</span> <span class="nn"><a href="uppsala_pyub/query.html">uppsala_pyub.query</a></span> <span class="kn">import</span> <span class="n">run_search</span>
+<span class="kn">from</span> <span class="nn"><a href="uppsala_pyub/handle_results.html">uppsala_pyub.handle_results</a></span> <span class="kn">import</span> <span class="n">display_results</span>
+
+<span class="n">queries</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;creator&quot;</span><span class="p">:</span> <span class="s2">&quot;marcus garvey&quot;</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;creator&quot;</span><span class="p">:</span> <span class="s2">&quot;muysken pieter&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;resource_type&quot;</span><span class="p">:</span> <span class="s2">&quot;books&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;creation_from&quot;</span><span class="p">:</span> <span class="s2">&quot;1999&quot;</span>
+        <span class="s2">&quot;creation_to&quot;</span><span class="p">:</span> <span class="s2">&quot;2003&quot;</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+<span class="k">for</span> <span class="n">query</span> <span class="ow">in</span> <span class="n">queries</span><span class="p">:</span>
+    <span class="n">result_soup</span><span class="p">,</span> <span class="n">url</span> <span class="o">=</span> <span class="n">run_search</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+    <span class="n">selection</span> <span class="o">=</span> <span class="n">display_results</span><span class="p">(</span><span class="n">result_soup</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">selection</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">make_bibtex</span><span class="p">(</span><span class="n">selection</span><span class="p">,</span> <span class="n">output_location</span><span class="o">=</span><span class="s1">&#39;./&#39;</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<p>When used in a script, <code>display_results()</code> requires the same user interaction as cli usage.</p>
+
+<h3 id="implemented-instructions">Implemented "instructions"</h3>
+
+<h4 id="fetch_bibtex"><code>fetch_bibtex</code></h4>
+
+<p>The <code>fetch_bibtex</code> instruction constructs a bibtex file from the data returned by the library's search url and saves it in the current working directory. The bibtex key is the same as the filename without the <code>.bib</code> extension. Keys are constructed to be human readable and recognizable by the resource creator and year.</p>
+
+<p>N.b. There are currently no checks in place to prevent pyub from overwriting an existing entry, so take care to quarantine bibtex downloads and manually adjust the key/filename as necessary to disambiguate works by a single author in the same year.</p>
+
+<h3 id="planned-instructions">Planned "instructions"</h3>
+
+<h4 id="generate_citation"><code>generate_citation</code></h4>
+
+<p>Generate a formatted citation for the selected resource in a given referencing style.</p>
+
+<h4 id="list_links"><code>list_links</code></h4>
+
+<p>Get a list of urls to / about the selected resource.</p>
+
+<h4 id="show_physical_locations"><code>show_physical_locations</code></h4>
+
+<p>List UU libraries that hold the selected resource.</p>
+</div>
+
+                        <input id="mod-uppsala_pyub-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+
+                        <label class="view-source-button" for="mod-uppsala_pyub-view-source"><span>View Source</span></label>
+
+                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">1</span></a><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-2"><a href="#L-2"><span class="linenos">2</span></a><span class="sd">.. include:: ../README.md</span>
+</span><span id="L-3"><a href="#L-3"><span class="linenos">3</span></a><span class="sd">&quot;&quot;&quot;</span>
+</span></pre></div>
+
+
             </section>
     </main>
 <script>
