@@ -29,7 +29,8 @@ Check the available options with `pyub --help`
 
 ### As a Module
 
-Pyub can also be used in scripting. See the api documentation [here](https://github.com/bobborges/uppsala-pyub/tree/main/docs/). For example:
+Pyub can also be used in scripting. See the api documentation [here](https://bobborges.github.io/uppsala-pyub/). For example:
+
 
 ```python
 from uppsala_pyub.bibtex import make_bibtex
