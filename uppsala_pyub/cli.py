@@ -15,18 +15,30 @@ from uppsala_pyub.handle_results import display_results
 
 
 def links(xml_data, output_location='.'):
+    """
+    place holder for eventual action... will probably be additional submodule.
+    """
     raise NotImplementedError("`list_links` is not yet implemented.")
 
 def citation(xml_data, output_location='.'):
+    """
+    place holder for eventual action... will probably be additional submodule.
+    """
     raise NotImplementedError("`generate_citation` is not implemented. Fetch bibtex instead.")
 
 def location(xml_data, output_location='.'):
+    """
+    place holder for eventual action... will probably be additional submodule.
+    """
     raise NotImplementedError("`show_physical_location` is not yet implemented.")
 
 
 
 #if __name__ == '__main__':
 def cli():
+    """
+    Run command line interface
+    """
     citation_formats = {
         "apa-6": "APA (6th edition)",
         "apa-7": "APA (7th edition)",

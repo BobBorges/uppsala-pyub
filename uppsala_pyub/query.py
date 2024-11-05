@@ -9,6 +9,13 @@ import re
 
 
 def format_date_string(datestring, startdate=True):
+    """
+    Format the datestring to YYYY-mm-dd format.
+
+    Startdate provede 01-01 to a year, else 12-31
+
+    This function assumes input is in YYYY format. Fully formed dates are returned as is, and in YYYY-mm, the month will be overwritten according to the startdate parameter.
+    """
     pat = re.compile(r'\d{4}-\d{2}-\d{2}')
     if pat.search(datestring) is not None:
         return datestring
@@ -24,6 +31,9 @@ def format_date_string(datestring, startdate=True):
 
 
 def format_creator_names(names):
+    """
+    returns a list of creators, e.g. when passed a multi author citation `Smith and Doe`
+    """
     formatted_names = []
     pat = re.compile(r'(,|and|&)')
     formatted_names.extend([_.strip() for _ in pat.split(names) if _.strip() != ''])
@@ -31,6 +41,9 @@ def format_creator_names(names):
 
 
 def search_url(**kwargs):
+    """
+    Construct search URL based on kwarg parameters.
+    """
     base_url = "https://uub.primo.exlibrisgroup.com/discovery/search?"
     tabscope = f"tab=Everything&search_scope=MyInst_and_CI&vid=46LIBRIS_UUB:UUB&lang={kwargs.get("language")}&mode=advanced&offset=0"
     filters = []
@@ -62,6 +75,13 @@ def search_url(**kwargs):
 
 
 def run_search(**kwargs):
+    """
+    Run a search based on key-word arguments. See ./cli.py for a list of accepted keywords.
+
+    Returns:
+        soup: (bs4 object) parsed result of the url
+        url (str): UU UB search url
+    """
     url = search_url(**kwargs)
     print("\n\n", url, "\n\n")
     soup = make_soup(url)
