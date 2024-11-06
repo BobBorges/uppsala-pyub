@@ -66,7 +66,8 @@ def format_creator_names(names):
     """
     formatted_names = []
     pat = re.compile(r'(,|and|&)')
-    formatted_names.extend([_.strip() for _ in pat.split(names) if _.strip() != ''])
+    names = pat.sub("|", names)
+    formatted_names.extend([_.strip() for _ in names.split("|") if _.strip() != ''])
     return formatted_names
 
 
