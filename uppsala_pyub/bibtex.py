@@ -27,6 +27,30 @@ def make_bibtex(xml_data, output_location='.'):
         return key
 
     def _booktitle(bibtex):
+        try:
+            part_of = xml_data.find(f"{ns['xml']}display/{ns['xml']}ispartof").text
+            assert part_of is not None
+            assert part_of != ""
+        except:
+            return bibtex
+        else:
+            title, e, rest = re.split(r'\[(e|E)ds?\],', part_of)
+            for line in bibtex:
+                if "    editor = {" in line:
+                    editor = line.split("{")[1].strip("}")
+                    for e in editor.split("AND"):
+                        e = e.strip()
+                        title.replace(e, "")
+                    title.strip().strip("&").strip("and").strip().strip(",")
+            bibtex.append(f"    booktitle = {{{title}}}")
+            pages = re.search(r'pp\s(\d{1,5}(-\d{1,5}))', rest)
+            if pages is not None:
+                bibtex.append(f"   pages = {{{pages.group(1)}}}")
+            plapub = re.search(r'(\S+:.*),', rest)
+            if plapub is not None:
+                place, publisher = [_.strip() for _ in plapub.group(1).split(":")]
+                bibtex.append(f"    location = {{{place}}}")
+                bibtex.append(f"    publisher = {{{publisher}}}")
         return bibtex
 
     def _doi(bibtex):
@@ -41,6 +65,15 @@ def make_bibtex(xml_data, output_location='.'):
         return bibtex
 
     def _editor(bibtex):
+        try:
+            editors = xml_data.find(f"{ns['xml']}display/{ns['xml']}contributor").text
+            assert editors is not None
+            assert editors is not None
+        except:
+            return bibtex
+        else:
+            editors = ' AND '.join([_.strip() for _ in editors.split(';')])
+            bibtex.append(f"    editor = {{{editors.split()}}}")
         return bibtex
 
     def _isbn(bibtex):
@@ -113,6 +146,9 @@ def make_bibtex(xml_data, output_location='.'):
         return bibtex
 
     def _publisher(bibtex):
+        for line in bibtex:
+            if "    publisher = {" in line:
+                return bibtex
         try:
             publisher = xml_data.find(f"{ns['xml']}display/{ns['xml']}publisher").text
             publisher = publisher.split(":")[-1]
@@ -141,11 +177,13 @@ def make_bibtex(xml_data, output_location='.'):
         "books": "book",
         "book": "book",
         "article": "article",
+        "book_chapter": "chapter",
     }
 
     fields = {
         "book": [_publisher, _place, _isbn],
-        "article": [_journal, _volume, _issue, _pages, _doi]
+        "article": [_journal, _volume, _issue, _pages, _doi],
+        "chapter": [_editor, _booktitle, _publisher, _place, _pages, _isbn],
     }
 
     year, author_list, title, resource_type = get_yatt(xml_data, ns)
@@ -166,5 +204,6 @@ def make_bibtex(xml_data, output_location='.'):
     #    print(bibtex)
 
     _write_bibtex(bibtex, bibtex_key)
+    return bibtex_key
 
 
