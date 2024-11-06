@@ -8,6 +8,36 @@ import re
 
 
 
+def query_template():
+    """
+    Return a dictionary of query key-value pairs and default values.
+    """
+    return {
+        "output_destination": "./",
+        "creator": None,
+        "creator_precision": "contains",
+        "title": None,
+        "title_precision": "contains",
+        "creation_from": None,
+        "creation_to": None,
+        "resource_type": None,
+        "join_by": "AND",
+        "query": None,
+        "language": "en",
+    }
+
+
+def cap_query(query):
+    """
+    fill in all the missing variable to make a complete query dict
+    """
+    t = query_template()
+    for k, v in t.items():
+        if k not in query:
+            query[k] = v
+    return query
+
+
 def format_date_string(datestring, startdate=True):
     """
     Format the datestring to YYYY-mm-dd format.
@@ -36,7 +66,8 @@ def format_creator_names(names):
     """
     formatted_names = []
     pat = re.compile(r'(,|and|&)')
-    formatted_names.extend([_.strip() for _ in pat.split(names) if _.strip() != ''])
+    names = pat.sub("|", names)
+    formatted_names.extend([_.strip() for _ in names.split("|") if _.strip() != ''])
     return formatted_names
 
 

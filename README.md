@@ -34,8 +34,13 @@ Pyub can also be used in scripting. See the api documentation [here](https://bob
 
 ```python
 from uppsala_pyub.bibtex import make_bibtex
-from uppsala_pyub.query import run_search
+from uppsala_pyub.query import (
+	cap_query,
+	run_search,
+)
 from uppsala_pyub.handle_results import display_results
+
+
 
 queries = [
 	{
@@ -48,11 +53,12 @@ queries = [
 		"creation_to": "2003"
 	}
 ]
-for query in queries:
-	result_soup, url = run_search(query)
+for q in queries:
+	query = cap_query(q)
+	result_soup, url = run_search(**query)
 	selection = display_results(result_soup, url)
 	if selection is not None:
-		make_bibtex(selection, output_location='./')
+		bibtex_key = make_bibtex(selection, output_location='./')
 ```
 
 
