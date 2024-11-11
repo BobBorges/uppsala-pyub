@@ -25,7 +25,10 @@ def get_yatt(root, ns):
         ns: namespace dict
     """
     y, a, t, T = None, None, None, ''
-    y = root.find(f"{ns['xml']}addata/{ns['xml']}date").text
+    try:
+        y = root.find(f"{ns['xml']}addata/{ns['xml']}date").text
+    except:
+        y = ""
     try:
         a = [_.text.strip() for _ in root.findall(f"{ns['xml']}addata/{ns['xml']}au") if _.text.strip() != '']
         assert a is not None

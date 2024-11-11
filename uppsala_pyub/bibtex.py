@@ -34,7 +34,11 @@ def make_bibtex(xml_data, output_location='.'):
         except:
             return bibtex
         else:
-            title, e, rest = re.split(r'\[(e|E)ds?\],', part_of)
+            try:
+                title, e, rest = re.split(r'\[(e|E)ds?\],', part_of)
+            except:
+                title = part_of
+                e, rest = None, None
             for line in bibtex:
                 if "    editor = {" in line:
                     editor = line.split("{")[1].strip("}")
@@ -43,14 +47,15 @@ def make_bibtex(xml_data, output_location='.'):
                         title.replace(e, "")
                     title.strip().strip("&").strip("and").strip().strip(",")
             bibtex.append(f"    booktitle = {{{title}}}")
-            pages = re.search(r'pp\s(\d{1,5}(-\d{1,5}))', rest)
-            if pages is not None:
-                bibtex.append(f"   pages = {{{pages.group(1)}}}")
-            plapub = re.search(r'(\S+:.*),', rest)
-            if plapub is not None:
-                place, publisher = [_.strip() for _ in plapub.group(1).split(":")]
-                bibtex.append(f"    location = {{{place}}}")
-                bibtex.append(f"    publisher = {{{publisher}}}")
+            if rest is not None:
+                pages = re.search(r'pp\s(\d{1,5}(-\d{1,5}))', rest)
+                if pages is not None:
+                    bibtex.append(f"   pages = {{{pages.group(1)}}}")
+                plapub = re.search(r'(\S+:.*),', rest)
+                if plapub is not None:
+                    place, publisher = [_.strip() for _ in plapub.group(1).split(":")]
+                    bibtex.append(f"    location = {{{place}}}")
+                    bibtex.append(f"    publisher = {{{publisher}}}")
         return bibtex
 
     def _doi(bibtex):
@@ -177,13 +182,13 @@ def make_bibtex(xml_data, output_location='.'):
         "books": "book",
         "book": "book",
         "article": "article",
-        "book_chapter": "chapter",
+        "book_chapter": "incollection",
     }
 
     fields = {
         "book": [_publisher, _place, _isbn],
         "article": [_journal, _volume, _issue, _pages, _doi],
-        "chapter": [_editor, _booktitle, _publisher, _place, _pages, _isbn],
+        "incollection": [_editor, _booktitle, _publisher, _place, _pages, _isbn],
     }
 
     year, author_list, title, resource_type = get_yatt(xml_data, ns)
