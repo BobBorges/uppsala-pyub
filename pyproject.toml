@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "uppsala-pyub"
-version = "0.2.0"
+version = "0.3.0"
 description = "A python module and CLI to facilitate searching Uppsala University's catalog."
 authors = ["bobborges"]
 license = "GPLv3"
