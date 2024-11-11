@@ -86,7 +86,7 @@ def search_url(**kwargs):
             for c in creators:
                 queries.append("query=creator," + kwargs.get('creator_precision') + "," + c)
         if kwargs.get("title") is not None:
-            queries.append("query=title," + title_precision + "," + kwargs.get("title"))
+            queries.append("query=title," + kwargs.get("title_precision") + "," + kwargs.get("title"))
         query = f",{kwargs.get('join_by')}&".join(queries)
     else:
         query = kwargs.get("query")

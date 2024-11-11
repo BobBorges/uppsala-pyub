@@ -54,7 +54,7 @@ def cli():
     resource_types = [
         "books",
         "articles",
-        "dissertations",
+        "book_chapter",
     ]
 
     parser = argparse.ArgumentParser(description=__doc__)
